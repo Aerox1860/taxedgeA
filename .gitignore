@@ -1,0 +1,19 @@
+taxedge-backend/src/main/resources/serviceAccountKey.json
+*.apk
+mobile-app (2).zip
+mobile-app.zip
+taxedge-backend.zip
+scratch/
+.env
+.env.*
+!.env.example
+
+node_modules/
+dist/
+build/
+target/
+.gradle/
+.tools/
+.agents/
+taxedge-backend/taxedge-backend/
+taxedge-backend/.git_backend_backup/

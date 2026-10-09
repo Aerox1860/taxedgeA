@@ -1,0 +1,122 @@
+CREATE TABLE property_loan_applications (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    cust_id VARCHAR(50) NOT NULL,
+    application_number VARCHAR(40) NOT NULL,
+    loan_type VARCHAR(80) NOT NULL,
+    loan_type_id VARCHAR(80) NOT NULL,
+    purpose VARCHAR(100) NULL,
+    custom_purpose VARCHAR(255) NULL,
+    required_amount DECIMAL(19,2) NULL,
+    preferred_tenure_months INT NULL,
+    employment_type VARCHAR(100) NULL,
+    is_existing_customer BOOLEAN NULL,
+    existing_emi DECIMAL(19,2) NULL,
+    monthly_income_or_turnover DECIMAL(19,2) NULL,
+    property_stage VARCHAR(60) NULL,
+    estimated_property_value DECIMAL(19,2) NULL,
+    property_city VARCHAR(100) NULL,
+    status VARCHAR(40) NOT NULL,
+    is_confirmation_checked BOOLEAN NOT NULL DEFAULT FALSE,
+    submitted_at DATETIME(6) NULL,
+    created_at DATETIME(6) NOT NULL,
+    updated_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT uk_property_loan_application_number UNIQUE (application_number),
+    KEY idx_property_loan_cust (cust_id),
+    KEY idx_property_loan_status (status),
+    KEY idx_property_loan_created (created_at),
+    CONSTRAINT fk_property_loan_customer FOREIGN KEY (cust_id) REFERENCES customers (cust_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE property_loan_applicants (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    application_id BIGINT NOT NULL,
+    full_name VARCHAR(150) NULL,
+    pan VARCHAR(10) NULL,
+    mobile VARCHAR(10) NULL,
+    dob DATE NULL,
+    current_address VARCHAR(1000) NULL,
+    gender VARCHAR(40) NULL,
+    marital_status VARCHAR(40) NULL,
+    residence_type VARCHAR(80) NULL,
+    years_at_current_address VARCHAR(40) NULL,
+    employer_category VARCHAR(80) NULL,
+    employer_name VARCHAR(200) NULL,
+    total_work_experience VARCHAR(40) NULL,
+    years_in_current_job VARCHAR(40) NULL,
+    annual_income DECIMAL(19,2) NULL,
+    has_existing_loans BOOLEAN NULL,
+    created_at DATETIME(6) NOT NULL,
+    updated_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT uk_property_loan_applicant_application UNIQUE (application_id),
+    CONSTRAINT fk_property_loan_applicant_application FOREIGN KEY (application_id)
+        REFERENCES property_loan_applications (id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE property_loan_properties (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    application_id BIGINT NOT NULL,
+    pincode VARCHAR(6) NULL,
+    city VARCHAR(100) NULL,
+    district VARCHAR(100) NULL,
+    state VARCHAR(100) NULL,
+    property_address VARCHAR(1000) NULL,
+    landmark VARCHAR(255) NULL,
+    property_type VARCHAR(80) NULL,
+    property_sub_type VARCHAR(100) NULL,
+    construction_status VARCHAR(80) NULL,
+    current_usage VARCHAR(80) NULL,
+    area_type VARCHAR(80) NULL,
+    area DECIMAL(19,2) NULL,
+    property_age VARCHAR(80) NULL,
+    approving_authority VARCHAR(120) NULL,
+    estimated_market_value DECIMAL(19,2) NULL,
+    created_at DATETIME(6) NOT NULL,
+    updated_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT uk_property_loan_property_application UNIQUE (application_id),
+    CONSTRAINT fk_property_loan_property_application FOREIGN KEY (application_id)
+        REFERENCES property_loan_applications (id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE property_loan_ownership (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    application_id BIGINT NOT NULL,
+    ownership_type VARCHAR(50) NULL,
+    co_owner_full_name VARCHAR(150) NULL,
+    co_owner_relationship VARCHAR(80) NULL,
+    co_owner_pan VARCHAR(10) NULL,
+    co_owner_mobile VARCHAR(10) NULL,
+    current_lender VARCHAR(120) NULL,
+    existing_loan_type VARCHAR(100) NULL,
+    outstanding_loan_amount DECIMAL(19,2) NULL,
+    is_confirmation_checked BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at DATETIME(6) NOT NULL,
+    updated_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT uk_property_loan_ownership_application UNIQUE (application_id),
+    CONSTRAINT fk_property_loan_ownership_application FOREIGN KEY (application_id)
+        REFERENCES property_loan_applications (id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE property_loan_documents (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    application_id BIGINT NOT NULL,
+    document_type VARCHAR(80) NOT NULL,
+    document_name VARCHAR(200) NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    file_size BIGINT NOT NULL,
+    content_type VARCHAR(150) NOT NULL,
+    required BOOLEAN NOT NULL,
+    uploaded_at DATETIME(6) NOT NULL,
+    created_at DATETIME(6) NOT NULL,
+    updated_at DATETIME(6) NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT uk_property_loan_document_type UNIQUE (application_id, document_type),
+    KEY idx_property_loan_document_application (application_id),
+    KEY idx_property_loan_document_type (document_type),
+    CONSTRAINT fk_property_loan_document_application FOREIGN KEY (application_id)
+        REFERENCES property_loan_applications (id) ON DELETE CASCADE
+) ENGINE=InnoDB;

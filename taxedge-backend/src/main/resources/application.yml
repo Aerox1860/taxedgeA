@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: taxedge-backend
+
+  profiles:
+    active: dev
+
+server:
+  port: ${PORT:9091}
+
+  error:
+    include-message: always
+
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 259200000  # 3 days
+
+
+# ===============================
+# ACTUATOR
+# ===============================
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+
+    prometheus:
+      enabled: true
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+
+logging:
+  level:
+    com.taxedge: DEBUG

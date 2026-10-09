@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 150MB
+app:
+  otp:
+    console-delivery-enabled: false
+  storage:
+    company-registration-dir: ${COMPANY_REGISTRATION_STORAGE_DIR:/var/lib/taxedge/uploads/company-registration}
+    property-loan-dir: ${PROPERTY_LOAN_STORAGE_DIR:/var/lib/taxedge/uploads/property-loans}
+logging:
+  level:
+    com.taxedge: WARN

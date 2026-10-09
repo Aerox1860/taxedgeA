@@ -1,0 +1,24 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 150MB
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/taxedge_db}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: ${JWT_SECRET:dev-local-jwt-secret-key-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ}
+
+app:
+  otp:
+    console-delivery-enabled: true
+  storage:
+    company-registration-dir: ${COMPANY_REGISTRATION_STORAGE_DIR:./uploads/company-registration}
+    property-loan-dir: ${PROPERTY_LOAN_STORAGE_DIR:./uploads/property-loans}
